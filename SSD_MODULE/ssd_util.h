@@ -11,8 +11,9 @@
 #ifndef _UTEST_
 	#include "hw.h"
 #else
-
+#ifndef LOCAL
 	typedef signed long long int64_t;
+#endif
 	#include <stdio.h>
 	#include <malloc.h>
 	#include <memory.h>

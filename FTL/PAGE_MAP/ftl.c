@@ -43,7 +43,9 @@ void FTL_INIT(void)
 		INIT_IO_BUFFER();
 #endif
 #ifdef MONITOR_ON
+#ifndef LOCAL
 		INIT_LOG_MANAGER();
+#endif
 #endif
 		g_init = 1;
 #ifdef FTL_GET_WRITE_WORKLOAD
