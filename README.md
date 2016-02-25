@@ -19,10 +19,6 @@ Acknowledgement
 -----
 * This work is sponsored by IT R&D program MKE/KEIT. [No.10035202, Large Scale hyper-MLC SSD Technology Development].
 
-Architecture
------
-![VSSIM Architecture]( http://dmclab.hanyang.ac.kr/wikidata/img/vssim_architecture.jpg)
-
 User Guide
 -----
 
