@@ -91,7 +91,8 @@ This section explains the entire process of actually compiling VSSIM and making 
         $ ./link_pm_local
 
 2. VSSIM Execution
-	Change tests in VSSIM-1/LOCAL/tests.c as you see fit. To run your code
+
+    Change tests in VSSIM-1/LOCAL/tests.c as you see fit. To run your code
 
         $ cd VSSIM-1/LOCAL
         $ make
