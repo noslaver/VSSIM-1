@@ -90,13 +90,13 @@ This section explains the entire process of actually compiling VSSIM and making 
 
     VSSIM is modularized to make it easy for the user to easily change FTL. One can change FTL using simple link/unlink script. To link our FTL code
 
-        $ cd VSSIM/CONFIG/ftl-setting/
+        $ cd VSSIM-1/CONFIG/ftl-setting/
         $ ./unlink_pm_local
         $ ./link_pm_local
 
 2. VSSIM Execution
 
-        $ cd VSSIM/LOCAL
+        $ cd VSSIM-1/LOCAL
         $ make
 		$ ./tests
 
