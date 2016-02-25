@@ -82,7 +82,7 @@ This section explains about the structure of virtual SSD, in other words, the se
 
 This section explains the entire process of actually compiling VSSIM and making it operate in QEMU.
 
-2. FTL Setting
+1. FTL Setting
 
     VSSIM is modularized to make it easy for the user to easily change FTL. One can change FTL using simple link/unlink script. To link our FTL code
 
@@ -91,6 +91,7 @@ This section explains the entire process of actually compiling VSSIM and making 
         $ ./link_pm_local
 
 2. VSSIM Execution
+	Change tests in VSSIM-1/LOCAL/tests.c as you see fit. To run your code
 
         $ cd VSSIM-1/LOCAL
         $ make
