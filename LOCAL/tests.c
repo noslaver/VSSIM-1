@@ -1,6 +1,9 @@
 #include "ssd.h"
 #include "common.h"
+
 #include <assert.h>
+#include <time.h>
+#include <stdlib.h>
 
 #define RUN_TEST(SETUP, FUNC)   if(SETUP) popen("rm data/*.dat", "r"); \
 						        SSD_INIT(); \
@@ -16,7 +19,7 @@ int test_access_seq(int req_size) {
     int sectors_per_write = req_size * PAGE_SIZE * SECTORS_PER_PAGE;
 
 	// write entire device
-	for(int i = 0; i < SECTOR_NB; i += sectors_per_write) {
+	for(int i = 0; i < 0.7 * SECTOR_NB; i += sectors_per_write) {
 		if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
 			LOG("wrote %.3lf of device", (double)i  / (double)SECTOR_NB);
 		}
@@ -34,17 +37,19 @@ int test_access_seq(int req_size) {
  * simple test that writes all sectors in the device random
  */
 int test_access_random(int req_size) {
-    // page size - 4kB
     int sectors_per_write = req_size * PAGE_SIZE * SECTORS_PER_PAGE;
 
 	// write entire device
-	for(int i = 0; i < SECTOR_NB; i += sectors_per_write) {
+    int i = 0;
+    srand(time(NULL));
+	while (i < 0.7 * SECTOR_NB) {
 		if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
 			LOG("wrote %.3lf of device", (double)i  / (double)SECTOR_NB);
 		}
 
-		int lba = i % SECTOR_NB;
+		int lba = (rand() % SECTOR_NB) & ((1 << 32) - 8);
 		SSD_WRITE(sectors_per_write, lba);
+        i += sectors_per_write;
 	}
 
 	printf("wrote random\n");
