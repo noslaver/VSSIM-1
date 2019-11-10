@@ -16,15 +16,15 @@ extern int32_t* mapping_table;
  * simple test that writes all sectors in the device sequentially
  */
 int test_access_seq(int req_size) {
-    int sectors_per_write = req_size * PAGE_SIZE * SECTORS_PER_PAGE;
+	int sectors_per_write = req_size * SECTORS_PER_PAGE;
 
-	// write entire device
+	// write 70 percent of device
 	for(int i = 0; i < 0.7 * SECTOR_NB; i += sectors_per_write) {
 		if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
 			LOG("wrote %.3lf of device", (double)i  / (double)SECTOR_NB);
 		}
 
-		int lba = i % SECTOR_NB;
+		int lba = i % ((int)(0.7 * SECTOR_NB));
 		SSD_WRITE(sectors_per_write, lba);
 	}
 
@@ -37,19 +37,19 @@ int test_access_seq(int req_size) {
  * simple test that writes all sectors in the device random
  */
 int test_access_random(int req_size) {
-    int sectors_per_write = req_size * PAGE_SIZE * SECTORS_PER_PAGE;
+    	int sectors_per_write = req_size * SECTORS_PER_PAGE;
 
-	// write entire device
-    int i = 0;
-    srand(time(NULL));
+    	// write 70 percent of device
+    	int i = 0;
+    	srand(time(NULL));
 	while (i < 0.7 * SECTOR_NB) {
 		if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
 			LOG("wrote %.3lf of device", (double)i  / (double)SECTOR_NB);
 		}
 
-		int lba = (rand() % SECTOR_NB) & ((1 << 32) - 8);
+		int lba = (rand() % ((int)(0.7 * SECTOR_NB))) & ((1 << 32) - SECTORS_PER_PAGE);
 		SSD_WRITE(sectors_per_write, lba);
-        i += sectors_per_write;
+		i += sectors_per_write;
 	}
 
 	printf("wrote random\n");
@@ -58,7 +58,7 @@ int test_access_random(int req_size) {
 }
 
 int main(int argc, char *argv[]) {
-	int setup = 1;
+    int setup = 1;
     if (argc < 3) {
         LOG("USAGE: %s <request_size> <workload>", argv[0]);
         return 1;
