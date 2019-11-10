@@ -46,8 +46,10 @@ int test_access_random(int req_size) {
 		if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
 			LOG("wrote %.3lf of device", (double)i  / (double)SECTOR_NB);
 		}
-
-		int lba = (rand() % ((int)(0.7 * SECTOR_NB))) & ((1 << 32) - SECTORS_PER_PAGE);
+		
+		// generating random lba, then aligning it to 4KB using SECTORS_PER_PAGE
+		int rand_lba = rand() % ((int)(0.7 * SECTOR_NB));
+		int lba = rand_lba - (rand_lba % SECTORS_PER_PAGE);
 		SSD_WRITE(sectors_per_write, lba);
 		i += sectors_per_write;
 	}
