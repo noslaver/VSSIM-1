@@ -13,7 +13,7 @@
 extern int32_t* mapping_table;
 
 /**
- * simple test that writes all sectors in the device sequentially
+ * simple test that writes 70% of sectors in the device sequentially
  */
 int test_access_seq(int req_size) {
 	int sectors_per_write = req_size * SECTORS_PER_PAGE;
@@ -34,7 +34,7 @@ int test_access_seq(int req_size) {
 }
 
 /**
- * simple test that writes all sectors in the device random
+ * simple test that writes 70% sectors in the device random
  */
 int test_access_random(int req_size) {
     	int sectors_per_write = req_size * SECTORS_PER_PAGE;
