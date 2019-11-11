@@ -1,0 +1,5 @@
+*.o
+*.swp
+LOCAL/
+!LOCAL/makefile
+!LOCAL/tests.c
