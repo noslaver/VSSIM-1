@@ -16,7 +16,7 @@
 #CDEFS += -D_UTEST_ # for ssd_util
 CDEFS += -DLOCAL
 CDEFS += -DVSSIM_BENCH
-CDEFS += -DFTL_DEBUG
+#CDEFS += -DFTL_DEBUG
 
 # List C source files here. (C dependencies are automatically generated.)
 # use file-extension c for "c-only"-files

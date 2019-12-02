@@ -35,6 +35,7 @@ void GC_CHECK(unsigned int phy_flash_nb, unsigned int phy_block_nb)
 
 	if(curr_root_entry->empty_block_nb < GC_THRESHOLD_BLOCK_NB_EACH){
 		for(i=0; i<GC_VICTIM_NB; i++){
+			printf("Gonna start gc\n");
 			ret = GARBAGE_COLLECTION();
 			if(ret == FAIL){
 				break;
@@ -46,9 +47,9 @@ void GC_CHECK(unsigned int phy_flash_nb, unsigned int phy_block_nb)
 
 int GARBAGE_COLLECTION(void)
 {
-#ifdef FTL_DEBUG
+//#ifdef FTL_DEBUG
 	printf("[%s] Start\n", __FUNCTION__);
-#endif
+//#endif
 	int i;
 	int ret;
 	int32_t lpn;
@@ -65,9 +66,9 @@ int GARBAGE_COLLECTION(void)
 
 	ret = SELECT_VICTIM_BLOCK(&victim_phy_flash_nb, &victim_phy_block_nb);
 	if(ret == FAIL){
-#ifdef FTL_DEBUG
+//#ifdef FTL_DEBUG
 		printf("[%s] There is no available victim block\n", __FUNCTION__);
-#endif
+//#endif
 		return FAIL;
 	}
 
@@ -110,9 +111,9 @@ int GARBAGE_COLLECTION(void)
 		return FAIL;
 	}
 
-#ifdef FTL_DEBUG
+//#ifdef FTL_DEBUG
 	printf("[%s] [f: %d, b: %d] Copy Page : %d, total victim : %ld, total empty : %ld \n",__FUNCTION__, victim_phy_flash_nb, victim_phy_block_nb,  copy_page_nb, total_victim_block_nb, total_empty_block_nb);
-#endif
+//#endif
 	SSD_BLOCK_ERASE(victim_phy_flash_nb, victim_phy_block_nb);
 	UPDATE_BLOCK_STATE(victim_phy_flash_nb, victim_phy_block_nb, EMPTY_BLOCK);
 	INSERT_EMPTY_BLOCK(victim_phy_flash_nb, victim_phy_block_nb);
@@ -127,9 +128,9 @@ int GARBAGE_COLLECTION(void)
 	WRITE_LOG(szTemp);
 #endif
 
-#ifdef FTL_DEBUG
+//#ifdef FTL_DEBUG
 	printf("[%s] Complete\n",__FUNCTION__);
-#endif
+//#endif
 	return SUCCESS;
 }
 
