@@ -276,7 +276,9 @@ void INIT_SSD_CONFIG(void)
 	/* SSD Configuration */
 	SECTORS_PER_PAGE = PAGE_SIZE / SECTOR_SIZE;
 	PAGES_PER_FLASH = PAGE_NB * BLOCK_NB;
-	SECTOR_NB = (int64_t)SECTORS_PER_PAGE * (int64_t)PAGE_NB * (int64_t)BLOCK_NB * (int64_t)FLASH_NB;
+	SECTOR_NB = (int64_t)SECTORS_PER_PAGE * (int64_t)PAGE_NB * (int64_t)BLOCK_NB * (int64_t)FLASH_NB
+        * (OVP / 100.0);
+    printf("SECTOR_NB: %ld", SECTOR_NB);
 #ifndef Polymorphic_FTL
 	WAY_NB = FLASH_NB / CHANNEL_NB;
 #endif
