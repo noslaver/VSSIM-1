@@ -156,7 +156,6 @@ int _FTL_READ(int32_t sector_nb, unsigned int length) {
 
   double compression_alpha = (double)rand() / (double)RAND_MAX;
 
-  printf("Compression alpha is %f\n", compression_alpha);
   int32_t lpn;
   int32_t ppn;
   int32_t lba = sector_nb;
@@ -281,15 +280,16 @@ int _FTL_WRITE(int32_t sector_nb, unsigned int length) {
 
 
   double compression_alpha = (double)rand() / (double)RAND_MAX;
-  printf("Compression alpha is %f\n", compression_alpha);
 
+  // Defining write_buffer (question (c)) that stores data until 4K compressed data, then flushes the writes.
   static int32_t write_buffer = 0;
   write_buffer += compression_alpha * length * SECTOR_SIZE;
-  printf("Write buffer is %d, but was %f\n", write_buffer, write_buffer - compression_alpha * length * SECTOR_SIZE + length * SECTOR_SIZE);
   if (write_buffer < 4096) {
       return SUCCESS;
   }
   length = write_buffer / SECTOR_SIZE;
+  // Flushing the write buffer
+  write_buffer = 0;
 
   int32_t lba = sector_nb;
   int32_t lpn;
@@ -341,26 +341,24 @@ int _FTL_WRITE(int32_t sector_nb, unsigned int length) {
          * read the old page before writing to it.
          * If alpha is greater than 0.5, it is more likely that the page is spread over
          * two pages, so we read them both. */
-	printf("Before ssd read\n");
         ret = SSD_PAGE_READ(CALC_FLASH(old_ppn), CALC_BLOCK(old_ppn), CALC_PAGE(old_ppn),
                         read_page_nb, READ, io_page_read_nb);
-	printf("After ssd read\n");
 
         if (compression_alpha > 0.5)
         {
-	    printf("Before ssd read comp > 0.5\n");
             ret = SSD_PAGE_READ(CALC_FLASH(old_ppn), CALC_BLOCK(old_ppn),
                     CALC_PAGE(old_ppn), read_page_nb, READ, io_page_read_nb);
-	    printf("After ssd read comp > 0.5\n");
         }
     }
+ 
 
-  if (sector_nb + length > SECTOR_NB) {
-    printf("ERROR[%s] Exceed Sector number\n", __FUNCTION__);
-    return FAIL;
-  } else {
-    io_alloc_overhead = ALLOC_IO_REQUEST(sector_nb, length, WRITE, &io_page_nb);
-  }
+    if (sector_nb + length > SECTOR_NB) {
+      printf("ERROR[%s] Exceed Sector number\n", __FUNCTION__);
+      return FAIL;
+    } else {
+      io_alloc_overhead = ALLOC_IO_REQUEST(sector_nb, length, WRITE, &io_page_nb);
+    }
+
     if ((left_skip || right_skip) && (old_ppn != -1)) {
       ret = SSD_PAGE_PARTIAL_WRITE(CALC_FLASH(old_ppn), CALC_BLOCK(old_ppn),
                                    CALC_PAGE(old_ppn), CALC_FLASH(new_ppn),
@@ -374,9 +372,7 @@ int _FTL_WRITE(int32_t sector_nb, unsigned int length) {
 
     write_page_nb++;
 
-  printf("1\n");
     UPDATE_OLD_PAGE_MAPPING(lpn);
-  printf("2\n");
     UPDATE_NEW_PAGE_MAPPING(lpn, new_ppn);
 
 #ifdef FTL_DEBUG
