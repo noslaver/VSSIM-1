@@ -100,8 +100,10 @@ int SSD_IO_INIT(void){
 	return 0;
 }
 
+int page_writes = 0;
 int SSD_PAGE_WRITE(unsigned int flash_nb, unsigned int block_nb, unsigned int page_nb, int offset, int type, int io_page_nb)
 {
+	page_writes++;
 	int channel, reg;
 	int ret = FAIL;
 	int delay_ret;

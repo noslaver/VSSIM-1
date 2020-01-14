@@ -14,6 +14,7 @@
     SSD_TERM()
 
 extern int32_t* mapping_table;
+extern int page_writes;
 
 /**
  * simple test that writes 70% of sectors in the device sequentially
@@ -21,8 +22,8 @@ extern int32_t* mapping_table;
 int test_access_seq(int req_size)
 {
     int sectors_per_write = req_size * SECTORS_PER_PAGE;
-
-    for (int i = 0; i <= SECTOR_NB; i += sectors_per_write) {
+	int i = 0;
+    for (i = 0; i <= SECTOR_NB; i += sectors_per_write) {
         if ((i / SECTORS_PER_PAGE) % (1024 * 10) == 0) {
             LOG("wrote %.3lf of device", (double)i / (double)SECTOR_NB);
         }
@@ -30,6 +31,10 @@ int test_access_seq(int req_size)
         int lba = i % (int)(SECTOR_NB);
         SSD_WRITE(sectors_per_write, lba);
     }
+    printf("%d page writes\n", page_writes);
+    printf("%d i \n", i);
+    printf("%lf WA\n", ((double)page_writes)/i * SECTORS_PER_PAGE);
+
 
     printf("wrote seq\n");
 

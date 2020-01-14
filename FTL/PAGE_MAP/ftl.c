@@ -154,7 +154,8 @@ int _FTL_READ(int32_t sector_nb, unsigned int length) {
     return FAIL;
   }
 
-  double compression_alpha = (double)rand() / (double)RAND_MAX;
+  //double compression_alpha = (double)rand() / (double)RAND_MAX;
+  double compression_alpha = 1;
 
   int32_t lpn;
   int32_t ppn;
@@ -278,8 +279,8 @@ int _FTL_WRITE(int32_t sector_nb, unsigned int length) {
 
   int io_page_nb;
 
-
-  double compression_alpha = (double)rand() / (double)RAND_MAX;
+  //double compression_alpha = (double)rand() / (double)RAND_MAX;
+  double compression_alpha = 1;
 
   // Defining write_buffer (question (c)) that stores data until 4K compressed data, then flushes the writes.
   static int32_t write_buffer = 0;
